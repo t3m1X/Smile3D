@@ -1,10 +1,25 @@
 #include "Application.h"
 #include "../globals.hpp"
+#include "../Utilities/Logger.h"
 
 namespace application {
 
+UpdateStatus ModulesPreUpdate() {
+    return kUpdateContinue;
+}
+UpdateStatus ModulesUpdate() {
+    return kUpdateContinue;
+}
+UpdateStatus ModulesPostUpdate() {
+    return kUpdateContinue;
+}    
+
 char Init() {
-	return 0;
+    char ret = 0;
+
+	logger::InitLogger(1000); //mTODO: This might get added to config
+
+	return ret;
 }
 
 UpdateStatus Update() {
@@ -23,16 +38,6 @@ UpdateStatus Update() {
 
 char CleanUp() {
 	return 0;
-}
-
-UpdateStatus ModulesPreUpdate() {
-    return kUpdateContinue;
-}
-UpdateStatus ModulesUpdate() {
-    return kUpdateContinue;
-}
-UpdateStatus ModulesPostUpdate() {
-    return kUpdateContinue;
 }
 
 } //namespace application

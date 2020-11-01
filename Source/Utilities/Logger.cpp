@@ -5,6 +5,13 @@
 
 namespace logger {
 
+std::deque<std::string> logs;
+int max_logs = 1000;
+
+void InitLogger(const int log_size) {
+	max_logs = log_size;
+}
+
 void ConsoleLog (const char file[], int line, const char* format, ...) {
     const int buf_size = 4096;
     static char tmp_string[buf_size];
@@ -16,7 +23,7 @@ void ConsoleLog (const char file[], int line, const char* format, ...) {
 	vsprintf_s(tmp_string, buf_size, format, ap);
 	va_end(ap);
 	sprintf_s(tmp_string2, buf_size, "\n%s(%d) : %s", file, line, tmp_string);
-	OutputDebugString((LPCWSTR)tmp_string2);
+	OutputDebugString(tmp_string2);
 
     // Add it to the logs
 	sprintf_s(tmp_string2, buf_size, "\n%s", tmp_string);
@@ -38,7 +45,7 @@ void SystemLog (const char file[], int line, const char* format, ...) {
 	vsprintf_s(tmp_string, buf_size, format, ap);
 	va_end(ap);
 	sprintf_s(tmp_string2, buf_size, "\n%s(%d) : %s", file, line, tmp_string);
-	OutputDebugString((LPCWSTR)tmp_string2);
+	OutputDebugString(tmp_string2);
 
 	std::cout << tmp_string2 << std::endl;
 }

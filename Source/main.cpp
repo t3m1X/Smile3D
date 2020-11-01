@@ -22,13 +22,13 @@ int main(int argc, char** argv) {
     MainStates app_state = kMainStart;
 
     // -- Application Initialize --
-    CONSOLE_LOG("-------------- Application Init --------------");
+    SYSTEM_LOG("-------------- Application Init --------------");
     if (application::Init()) {
         CONSOLE_LOG("-------------- Application Update --------------");
         app_state = kMainUpdate;
     }
     else {
-        CONSOLE_LOG("[Error] Application failed to Init properly");
+        SYSTEM_LOG("[Error] Application failed to Init properly");
         app_state = kMainExit;
     }
 

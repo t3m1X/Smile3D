@@ -8,15 +8,27 @@
     <Filter Include="Source Files\Application">
       <UniqueIdentifier>{af51a35f-22c7-45c4-b7fa-e014ce525091}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utilities">
+      <UniqueIdentifier>{77cfd541-a41e-437d-a877-0c8ad1a46ecd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Application\Application.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\Logger.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Application.h">
       <Filter>Source Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\Logger.h">
+      <Filter>Source Files\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
