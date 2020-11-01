@@ -40,7 +40,6 @@ bool IsFullscreenDesktop();
 bool IsMouseFocused(); */
 
 static SDL_Window* window; //The window we'll be rendering to
-
 static SDL_Surface* screen_surface; //The surface contained by the window
 
 } //namespace window
