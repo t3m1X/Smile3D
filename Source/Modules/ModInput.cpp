@@ -5,6 +5,9 @@
 #include "../Libraries/SDL/include/SDL.h"
 #include "../globals.hpp"
 
+//Modules
+#include "ModWindow.h"
+
 
 namespace input {
 enum KeyState {
@@ -88,6 +91,14 @@ UpdateStatus PreUpdate() {
 
             case SDL_MOUSEBUTTONUP:
                 mouse_buttons[e.button.button] = kKeyUp;
+            break;
+
+            case SDL_WINDOWEVENT:
+
+                if (e.window.event == SDL_WINDOWEVENT_RESIZED) {
+                    window::SetSize(e.window.data1, e.window.data2);
+                }
+            
             break;
 
         }

@@ -28,6 +28,9 @@
     <ClCompile Include="Modules\ModInput.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Modules\ModWindow.cpp">
+      <Filter>Source Files\Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Application.h">
@@ -37,6 +40,9 @@
       <Filter>Source Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="Modules\ModInput.h">
+      <Filter>Source Files\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Modules\ModWindow.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
   </ItemGroup>

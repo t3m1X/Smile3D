@@ -1,8 +1,11 @@
 #include "Application.h"
 #include "../globals.hpp"
 #include "../Utilities/Logger.h"
-#include "../Modules/ModInput.h"
 #include "../Libraries/SDL/include/SDL_keycode.h"
+
+//Modules
+#include "../Modules/ModInput.h"
+#include "../Modules/ModWindow.h"
 
 namespace application {
 
@@ -15,7 +18,7 @@ UpdateStatus ModulesPreUpdate() {
 }
 UpdateStatus ModulesUpdate() {
     if (input::GetKey(SDL_SCANCODE_ESCAPE))
-        return kUpdateFinish;
+        return kUpdateFinish; //mTODO: This should not go here in the future
 
     return kUpdateContinue;
 }
@@ -24,23 +27,20 @@ UpdateStatus ModulesPostUpdate() {
 }    
 
 char Init() {
-    char ret = 1;
-
 	logger::InitLogger(1000); //mTODO: This might get added to config
 
-    ret = input::Init();
+    // Init input
+    char ret = input::Init(); 
     if (!ret)
         return ret;
-
-    
+        
+    ret = window::Init();
     
 	return ret;
 }
 
 UpdateStatus Update() {
-    UpdateStatus return_status = kUpdateContinue;
-
-    return_status = ModulesPreUpdate();
+    UpdateStatus return_status = ModulesPreUpdate();
 
     if (return_status == kUpdateContinue)
         return_status = ModulesUpdate();
@@ -52,8 +52,9 @@ UpdateStatus Update() {
 }
 
 char CleanUp() {
-	char ret = 1;
 
+    // We CleanUp in reverse order of initialization
+	char ret = window::CleanUp();
     ret = input::CleanUp();
 
     return ret;
