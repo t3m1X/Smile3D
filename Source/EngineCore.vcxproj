@@ -125,10 +125,12 @@
   <ItemGroup>
     <ClCompile Include="Application\Application.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Modules\ModInput.cpp" />
     <ClCompile Include="Utilities\Logger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Application.h" />
+    <ClInclude Include="Modules\ModInput.h" />
     <ClInclude Include="Utilities\Logger.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

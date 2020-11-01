@@ -11,6 +11,9 @@
     <Filter Include="Source Files\Utilities">
       <UniqueIdentifier>{77cfd541-a41e-437d-a877-0c8ad1a46ecd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Modules">
+      <UniqueIdentifier>{dffda7ec-f110-4113-b0cb-6688cd46404b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -22,6 +25,9 @@
     <ClCompile Include="Utilities\Logger.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="Modules\ModInput.cpp">
+      <Filter>Source Files\Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Application.h">
@@ -29,6 +35,9 @@
     </ClInclude>
     <ClInclude Include="Utilities\Logger.h">
       <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Modules\ModInput.h">
+      <Filter>Source Files\Modules</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
