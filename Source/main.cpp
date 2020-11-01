@@ -1,4 +1,6 @@
 #include "Libraries/SDL/include/SDL.h"
+#include "Application/Application.h"
+#include "Utilities/Logger.h"
 
 #pragma comment ( lib, "Libraries/SDL/libx64/SDL2.lib" )
 #pragma comment ( lib, "Libraries/SDL/libx64/SDL2main.lib" )
@@ -7,56 +9,44 @@
 #define EXIT_SUCCESS 0
 
 enum MainStates {
-    kMainStart,
+    kMainStart = 0,
     kMainUpdate,
     kMainFinish,
     kMainExit
 };
 
 int main(int argc, char** argv) {
-    //m_TODO: LOG App Start
+    CONSOLE_LOG("Starting app...");
 
     int main_return = EXIT_FAILURE;
     MainStates app_state = kMainStart;
 
     // -- Application Initialize --
+    CONSOLE_LOG("-------------- Application Init --------------");
     if (application::Init()) {
-        //m_TODO: LOG Starting App Update
+        CONSOLE_LOG("-------------- Application Update --------------");
         app_state = kMainUpdate;
     }
     else {
-        //m_TODO: LOG Failure of Init
+        CONSOLE_LOG("[Error] Application failed to Init properly");
         app_state = kMainExit;
     }
 
     while (app_state == kMainUpdate) {
-        app_state = application::Update();
+        app_state = (MainStates)((int)app_state + (int)application::Update()); //mTODO: Maybe make more readable
     }
 
-    if (app_state = kMainFinish) {
+    if (app_state == kMainFinish) {
+        CONSOLE_LOG("-------------- Application CleanUp --------------");
+
         if (application::CleanUp())
             main_return = EXIT_SUCCESS;
         else
-        {
-            //m_TODO: LOG Failure At Cleanup
-        }
+            CONSOLE_LOG("[Error] Application failed to CleanUp properly");
+
     }
 
-    //m_TODO: LOG Exiting App
+    CONSOLE_LOG("Exiting app...");
     return main_return;
 
 }
-
-namespace application {
-    char Init() {
-        return 0;
-    }
-
-    MainStates Update() {
-        return kMainUpdate;
-    }
-
-    char CleanUp() {
-        return 0;
-    }
-} 
