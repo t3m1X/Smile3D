@@ -8,18 +8,23 @@
 //Modules
 #include "ModWindow.h"
 
-
 namespace input {
 enum KeyState {
-	kKeyIdle = 0,
+	kKeyInvalid = -1,
 	kKeyDown,
 	kKeyRepeat,
 	kKeyUp,
+    kKeyIdle,
     kKeyDownDouble
 };
 
 const unsigned int kMaxKeys = 300;
 const unsigned int kMaxMouseButtons = 5;
+const unsigned int kMaxKeyEvents = 50;
+
+unsigned int key_events_it = 0;
+KeyState* key_events[kMaxKeyEvents];
+
 KeyState* keyboard;
 KeyState* mouse_buttons;
 
@@ -47,23 +52,15 @@ char Init() {
 UpdateStatus PreUpdate() {
     UpdateStatus ret = kUpdateContinue;
     SDL_PumpEvents();
-	//const Uint8* keys = SDL_GetKeyboardState(NULL);
 
-    // Update keyboard states
-    for (int i = 0; i < kMaxKeys; ++i) {
-        if (keyboard[i] == kKeyDown)
-            keyboard[i] = kKeyRepeat;
-        else if (keyboard[i] == kKeyUp)
-            keyboard[i] = kKeyIdle;
+    // Update keyboard and mouse states
+    for (uint i = 0; i < key_events_it; ++i)
+    {
+        *key_events[i] = static_cast<KeyState>(static_cast<int>(*key_events[i]) + 1);
+        key_events[i] = nullptr;
     }
 
-    //Update mouse states
-    for (int i = 0; i < kMaxMouseButtons; ++i) {
-        if (mouse_buttons[i] == kKeyDown || mouse_buttons[i] == kKeyDownDouble)
-            mouse_buttons[i] = kKeyRepeat;
-        else if (mouse_buttons[i] == kKeyUp)
-            mouse_buttons[i] = kKeyIdle;
-    }
+    key_events_it = 0;
 
     SDL_Event e;
 	while (SDL_PollEvent(&e)) {
@@ -73,31 +70,40 @@ UpdateStatus PreUpdate() {
             break;
 
             case SDL_KEYUP:
-            if (!e.key.repeat)
+            if (!e.key.repeat) {
                 keyboard[e.key.keysym.scancode] = kKeyUp;
+                key_events[key_events_it++] = &keyboard[e.key.keysym.scancode];
+            }
             break;
 
             case SDL_KEYDOWN:
-            if (!e.key.repeat)
+            if (!e.key.repeat) {
                 keyboard[e.key.keysym.scancode] = kKeyDown;
+                key_events[key_events_it++] = &keyboard[e.key.keysym.scancode];
+            }
+       
             break;
 
             case SDL_MOUSEBUTTONDOWN:
             if (e.button.clicks == 2)
                 mouse_buttons[e.button.button] = kKeyDownDouble;
-            else
+            else {
                 mouse_buttons[e.button.button] = kKeyDown;
+                key_events[key_events_it++] = &mouse_buttons[e.button.button];
+
+            }
             break;
 
             case SDL_MOUSEBUTTONUP:
-                mouse_buttons[e.button.button] = kKeyUp;
+            mouse_buttons[e.button.button] = kKeyUp;
+            key_events[key_events_it++] = &mouse_buttons[e.button.button];
             break;
 
             case SDL_WINDOWEVENT:
 
-                if (e.window.event == SDL_WINDOWEVENT_RESIZED) {
-                    window::SetSize(e.window.data1, e.window.data2);
-                }
+            if (e.window.event == SDL_WINDOWEVENT_RESIZED) {
+                window::SetSize(e.window.data1, e.window.data2);
+            }
             
             break;
 

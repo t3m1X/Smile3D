@@ -3,8 +3,8 @@
 
 #include "../globals.hpp"
 
-class SDL_Window;
-class SDL_Surface;
+struct SDL_Window;
+struct SDL_Surface;
 
 namespace window {
 
@@ -17,7 +17,7 @@ void UpdateSize(); //To be called on resize
 void SetWidth(uint width);
 void SetHeight(uint height);
 void SetSize(uint width, uint height);
-/* To be implemented 
+/* mTODO: To be implemented 
 void SetFullscreen(bool value);
 void SetResizable(bool value);
 void SetBorderless(bool value);

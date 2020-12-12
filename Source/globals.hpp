@@ -4,7 +4,7 @@
 enum UpdateStatus {
     kUpdateContinue = 0,
     kUpdateFinish,
-    kUpdateExit
+    kUpdateError
 };
 
 // TYPEDEFS
