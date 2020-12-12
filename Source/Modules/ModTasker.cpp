@@ -61,7 +61,7 @@ char Init() {
     m_threads.reserve(concurrent_threads - 1);
     m_threads_status.reserve(concurrent_threads - 1);
     for (int i = 0; i < concurrent_threads - 1; ++i){
-        m_threads.push_back(std::thread(&ProcessTask, std::ref(stop_pool)));
+        m_threads.push_back(std::thread(&ProcessTask, i, std::ref(stop_pool)));
         m_threads_status.push_back(false);
     }
 
@@ -111,6 +111,15 @@ void WaitForTasks() {
 			m_task();
         }
     } while (is_processing);
+}
+
+void AddTask(std::function<void()> task) {
+    {
+    std::lock_guard<std::mutex> lk(coordination_mtx);
+    m_tasks_queue.push(task);
+    }
+
+    condition.notify_one();
 }
 
 } //namespace tasker
