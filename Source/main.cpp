@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
     }
 
     while (app_state == kMainUpdate) {
-        app_state = (MainStates)((int)app_state + (int)application::Update()); //mTODO: Maybe make more readable
+        app_state = static_cast<MainStates>(static_cast<int>(app_state) + static_cast<int>(application::Update()));
     }
 
     if (app_state == kMainFinish) {
