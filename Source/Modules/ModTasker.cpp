@@ -6,6 +6,9 @@
 #include <mutex>
 #include <queue>
 
+#include "../Utilities/Logger.h"
+
+
 namespace tasker {
 
 uint concurrent_threads = 0;
@@ -60,7 +63,7 @@ char Init() {
 
     m_threads.reserve(concurrent_threads - 1);
     m_threads_status.reserve(concurrent_threads - 1);
-    for (int i = 0; i < concurrent_threads - 1; ++i){
+    for (uint i = 0; i < concurrent_threads - 1; ++i){
         m_threads.push_back(std::thread(&ProcessTask, i, std::ref(stop_pool)));
         m_threads_status.push_back(false);
     }
@@ -71,9 +74,10 @@ char Init() {
 }
 
 char CleanUp() {
+    CONSOLE_LOG("Shutting down thread pool");
     {
-        std::lock_guard<std::mutex> lk(coordination_mtx);
-        stop_pool = true;
+    std::lock_guard<std::mutex> lk(coordination_mtx);
+    stop_pool = true;
     }
 
     condition.notify_all(); //Wake up all threads

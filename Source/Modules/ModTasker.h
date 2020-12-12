@@ -6,17 +6,17 @@
 
 namespace tasker {
 
-enum class TaskType {
+/*enum class TaskType {
     kAsyncTask = 0,
     kUpdateTask,
     kFrameTask
-};
+}; mTODO:Future implementation */
 
 char Init();
 char CleanUp();
 
 template<typename F, typename... Args>
-void AddTask(TaskType t, std::function<void()> task);
+void AddTask(std::function<void()> task);
 
 uint GetConcurrentThreads();
 void WaitForTasks();

@@ -6,6 +6,7 @@
 //Modules
 #include "../Modules/ModInput.h"
 #include "../Modules/ModWindow.h"
+#include "../Modules/ModTasker.h"
 
 namespace application {
 
@@ -29,11 +30,14 @@ UpdateStatus ModulesPostUpdate() {
 char Init() {
 	logger::InitLogger(1000); //mTODO: This might get added to config
 
-    // Init input
-    char ret = input::Init(); 
+    char ret = tasker::Init(); 
     if (!ret)
         return ret;
         
+    ret = input::Init();
+    if (!ret)
+        return ret;
+
     ret = window::Init();
     
 	return ret;
@@ -56,6 +60,7 @@ char CleanUp() {
     // We CleanUp in reverse order of initialization
 	char ret = window::CleanUp();
     ret = input::CleanUp();
+    ret = tasker::CleanUp();
 
     return ret;
 }
