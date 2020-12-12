@@ -15,7 +15,6 @@ namespace tasker {
 char Init();
 char CleanUp();
 
-template<typename F, typename... Args>
 void AddTask(std::function<void()> task);
 
 uint GetConcurrentThreads();
