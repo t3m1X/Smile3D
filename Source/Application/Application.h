@@ -4,11 +4,10 @@
 
 namespace application {
 
-char Init(); //Application Initialization
-
-UpdateStatus Update(); //Application Update
-
-char CleanUp(); //Application Exit Cleanup
+char Init();
+//Returns 0 on continue, 1 on exit and 2 on error
+int Update();
+char CleanUp();
 
 } //namespace application
 

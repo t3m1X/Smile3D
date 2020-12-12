@@ -39,7 +39,7 @@ char Init() {
 	return ret;
 }
 
-UpdateStatus Update() {
+int Update() {
     UpdateStatus return_status = ModulesPreUpdate();
 
     if (return_status == kUpdateContinue)
@@ -48,7 +48,7 @@ UpdateStatus Update() {
     if (return_status == kUpdateContinue)
         return_status = ModulesPostUpdate();
 
-	return return_status;
+	return static_cast<int>(return_status);
 }
 
 char CleanUp() {
