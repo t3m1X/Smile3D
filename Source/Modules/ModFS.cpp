@@ -339,7 +339,7 @@ char DeleteDirectoryAndContents(const char* path, char recursive) {
             CONSOLE_LOG("Filesystem error deleting folder \"%s\": %s", path, PHYSFS_getLastError());
     }
     else
-        CONSOLE_LOG("Filesystem error deleting folder \"%s\": Folder has subfolders and recursive is off", path);
+        CONSOLE_LOG("Filesystem error deleting folder \"%s\": Folder has subfolders and recursive delete is off", path);
         
 }
 
