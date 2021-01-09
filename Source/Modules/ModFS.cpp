@@ -15,6 +15,8 @@
 namespace filesys {
 
 const char *kAssetsFolder = "Assets/";
+const char *kLibraryFolder = "Library/";
+const char *kSettingsFolder = "Settings/";
 
 std::string working_directory;
 

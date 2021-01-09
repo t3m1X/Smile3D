@@ -23,7 +23,7 @@ void ConsoleLog (const char file[], int line, const char* format, ...) {
 	vsprintf_s(tmp_string, buf_size, format, ap);
 	va_end(ap);
 	sprintf_s(tmp_string2, buf_size, "\n%s(%d) : %s", file, line, tmp_string);
-	OutputDebugString(tmp_string2);
+	OutputDebugStringA(tmp_string2);
 
     // Add it to the logs
 	sprintf_s(tmp_string2, buf_size, "\n%s", tmp_string);
@@ -45,7 +45,7 @@ void SystemLog (const char file[], int line, const char* format, ...) {
 	vsprintf_s(tmp_string, buf_size, format, ap);
 	va_end(ap);
 	sprintf_s(tmp_string2, buf_size, "\n%s(%d) : %s", file, line, tmp_string);
-	OutputDebugString(tmp_string2);
+	OutputDebugStringA(tmp_string2);
 
 	std::cout << tmp_string2 << std::endl;
 }
