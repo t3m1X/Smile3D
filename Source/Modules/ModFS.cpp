@@ -8,6 +8,7 @@
 #include "Libraries/Assimp/include/cfileio.h"
 #include "Libraries/Assimp/include/types.h"
 #include "Libraries/SDL/include/SDL_filesystem.h"
+#include "Libraries/SDL/include/SDL_rwops.h"
 
 #pragma comment (lib, "Libraries/PhysFS/libx64/physfs.lib")
 #pragma comment (lib, "Libraries/Assimp/libx64/assimp.lib")
@@ -113,6 +114,18 @@ void CreateAssimpIO() {
     assimp_io->CloseProc = AssimpClose;
 }
 
+/* SDL Functions */
+
+int CloseSDLRWops(SDL_RWops* rw) {
+	if (rw->hidden.mem.base) {
+		delete rw->hidden.mem.base;
+		rw->hidden.mem.base = nullptr;
+	}
+
+	SDL_FreeRW(rw);
+	return 0;
+}
+
 /* Filesys Functions */
 char Init() {
     // Initial Setup
@@ -208,6 +221,138 @@ char Copy (const char* source, const char* destination) {
     return ret;
 } 
 
+uint Load(const char* path, char** buffer) {
+    uint ret = 0;
 
+    PHYSFS_file *fs_file = PHYSFS_openRead(path);
+
+    if (fs_file) {
+        PHYSFS_sint32 file_size = static_cast<PHYSFS_sint32>(PHYSFS_fileLength(fs_file));
+
+        if (file_size > 0) {
+            *buffer = new char[file_size];
+            uint read_size = static_cast<uint>(PHYSFS_read(fs_file, *buffer, 1, file_size));
+            if (read_size != file_size) {
+                CONSOLE_LOG ("Filesystem error reading from file \"%s\": %s", path, PHYSFS_getLastError());
+
+                if (buffer) {
+                    delete[] buffer;
+                    buffer = nullptr;
+                }
+            }
+            else
+                ret = read_size;
+        }
+
+        if (!PHYSFS_close(fs_file))
+            CONSOLE_LOG("Filesystem error closing file \"%s\": %s", path, PHYSFS_getLastError());
+    }
+    else
+        CONSOLE_LOG("Filesystem error opening file \"%s\": %s", path, PHYSFS_getLastError());
+
+    return ret;
+}
+
+
+
+SDL_RWops* Load(const char* path) {
+    char *buffer;
+    int file_size = Load(path, &buffer);
+    SDL_RWops *ret = nullptr;
+
+    if (file_size > 0) {
+        ret = SDL_RWFromConstMem(buffer, file_size);
+        if (ret)
+            ret->close = CloseSDLRWops;
+    }
+
+    return ret;  
+}
+
+uint Save(const char* path, const void* buffer, uint size, char append) {
+    uint ret = 0;
+
+    bool exists = static_cast<bool>(PHYSFS_exists(path));
+    PHYSFS_file *fs_file = ((bool)append) ? PHYSFS_openAppend(path) : PHYSFS_openWrite(path);
+
+    if (fs_file) {
+        uint written_size = static_cast<uint>(PHYSFS_write(fs_file, (const void*)buffer, 1, size));
+
+        if (written_size != size)
+            CONSOLE_LOG("Filesystem error while writing to \"%s\": %s", path, PHYSFS_getLastError());
+        else {
+            if (append)
+                CONSOLE_LOG("Added %u data to \"%s\"", size, path);
+            else if (!exists)
+                CONSOLE_LOG("New file \"%s\" of %u bytes created", path, size);
+
+            ret = written_size;
+        }
+
+        if (!PHYSFS_close(fs_file))
+            CONSOLE_LOG("Filesystem error while closing file \"%s\": %s", path, PHYSFS_getLastError());            
+    }
+    else
+        CONSOLE_LOG("Filesystem error while opening file \"%s\": %s", path, PHYSFS_getLastError());
+
+    return ret;
+}
+
+char DeleteFile (const char* path) {
+    char ret = (char) false;
+
+    if (path) {
+        if (PHYSFS_delete(path)) {
+            CONSOLE_LOG("File \"%s\" deleted", path);
+            ret = (char) true;
+        }
+        else
+            CONSOLE_LOG("Filesystem error while deleting \"%s\": %s", path, PHYSFS_getLastError());
+    }
+
+    return ret;
+}
+
+char DeleteDirectoryAndContents(const char* path, char recursive) {
+    std::string current_folder = path;
+    current_folder += '/';
+
+    char **returned_files = PHYSFS_enumerateFiles(current_folder.c_str());
+    bool has_folders = false;
+
+    if (returned_files) {
+        for (char **it = returned_files; it != nullptr; ++it) {
+            if (PHYSFS_isDirectory((current_folder + *it).c_str())) {
+                has_folders = true;
+                if (recursive)
+                    DeleteDirectoryAndContents((current_folder + *it).c_str(), recursive); 
+            }
+            else
+                PHYSFS_delete((current_folder + *it).c_str());
+        }
+
+        PHYSFS_freeList(returned_files);
+    }
+
+    if (!has_folders || recursive) {
+        if (!PHYSFS_delete(path))
+            CONSOLE_LOG("Filesystem error deleting folder \"%s\": %s", path, PHYSFS_getLastError());
+    }
+    else
+        CONSOLE_LOG("Filesystem error deleting folder \"%s\": Folder has subfolders and recursive is off", path);
+        
+}
+
+const char* GetBasePath() {
+    return PHYSFS_getBaseDir();
+}
+
+const char* GetWritePath() {
+    return PHYSFS_getWriteDir();
+}
+
+const char* GetWorkingPath() {
+    return working_directory.c_str();
+}
 
 } //namespace filesys

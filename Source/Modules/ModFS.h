@@ -32,7 +32,7 @@ char DeleteDirectoryAndContents(const char* path, char recursive = 1);
 /* Path Getters */
 const char* GetBasePath();
 const char* GetWritePath();
-const char* GetReadPath();
+//const char* GetReadPath(); mTODO: is this really userful?
 const char* GetWorkingPath();
 
 } //filesys
