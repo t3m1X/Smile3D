@@ -1,12 +1,13 @@
 #include "Application.h"
-#include "../globals.hpp"
-#include "../Utilities/Logger.h"
-#include "../Libraries/SDL/include/SDL_keycode.h"
+#include "globals.hpp"
+#include "Utilities/Logger.h"
+#include "Libraries/SDL/include/SDL_keycode.h"
 
 //Modules
-#include "../Modules/ModInput.h"
-#include "../Modules/ModWindow.h"
-#include "../Modules/ModTasker.h"
+#include "Modules/ModInput.h"
+#include "Modules/ModWindow.h"
+#include "Modules/ModTasker.h"
+#include "Modules/ModFS.h"
 
 namespace application {
 
@@ -31,6 +32,10 @@ char Init() {
 	logger::InitLogger(1000); //mTODO: This might get added to config
 
     char ret = tasker::Init(); 
+    if (!ret)
+        return ret;
+
+    ret = filesys::Init(); 
     if (!ret)
         return ret;
         

@@ -1,7 +1,7 @@
 #ifndef SMILE3D_MODULES_MODWINDOW_H
 #define SMILE3D_MODULES_MODWINDOW_H
 
-#include "../globals.hpp"
+#include "globals.hpp"
 
 struct SDL_Window;
 struct SDL_Surface;

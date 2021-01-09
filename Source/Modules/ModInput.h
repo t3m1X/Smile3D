@@ -1,7 +1,7 @@
 #ifndef SMILE3D_MODULES_MODINPUT_H
 #define SMILE3D_MODULES_MODINPUT_H
 
-#include "../globals.hpp"
+#include "globals.hpp"
 
 namespace input {
     

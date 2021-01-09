@@ -1,7 +1,7 @@
 #include "ModWindow.h"
-#include "../Utilities/Logger.h"
-#include "../Libraries/SDL/include/SDL.h"
-#include "../globals.hpp"
+#include "Utilities/Logger.h"
+#include "Libraries/SDL/include/SDL.h"
+#include "globals.hpp"
 
 namespace window {
 

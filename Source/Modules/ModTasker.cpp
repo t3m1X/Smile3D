@@ -6,7 +6,7 @@
 #include <mutex>
 #include <queue>
 
-#include "../Utilities/Logger.h"
+#include "Utilities/Logger.h"
 
 
 namespace tasker {

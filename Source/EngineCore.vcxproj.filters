@@ -37,6 +37,12 @@
     <ClCompile Include="Modules\ModTasker.h">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Modules\ModFS.cpp">
+      <Filter>Source Files\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Modules\ModFS.h">
+      <Filter>Source Files\Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Application.h">
