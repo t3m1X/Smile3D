@@ -1,6 +1,8 @@
 #include "ModFS.h"
-#include <Windows.h>
 #include <string>
+#include <filesystem>
+
+/* Utilities */
 #include "Utilities/Logger.h"
 
 /* Libraries */
@@ -133,10 +135,7 @@ char Init() {
     PHYSFS_init(base_path);
     SDL_free(base_path);
 
-    WCHAR buf[256];
-    GetCurrentDirectoryW(256, buf); //Forcing the UNICODE version
-    std::wstring ws(buf);
-    working_directory = std::string(ws.begin(), ws.end());
+    working_directory = std::filesystem::current_path().string();
     working_directory += "/";
 
     AddPath(".");
